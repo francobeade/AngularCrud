@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -10,12 +10,17 @@ import { ClientesComponent } from './clientes/clientes.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormComponent } from './clientes/form.component';
+import { PaginatorComponent } from './paginator/paginator.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import localeAr from "@angular/common/locales/es-AR";
+
+registerLocaleData(localeAr, 'es')
 
 const routes: Routes = [
   { path: '', redirectTo: '/clientes', pathMatch: 'full' },
   { path: 'directivas', component: DirectivaComponent },
   { path: 'clientes', component: ClientesComponent },
+  { path: 'clientes/page/:page', component: ClientesComponent },
   { path: 'clientes/form', component: FormComponent },
   { path: 'clientes/form/:id', component: FormComponent },
 ];
@@ -39,6 +44,7 @@ export class AppRoutingModule {}
     FooterComponent,
     DirectivaComponent,
     ClientesComponent,
+    PaginatorComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +52,7 @@ export class AppRoutingModule {}
     FormsModule,
     RouterModule.forRoot(routes),
   ],
-  providers: [],
+  providers: [{provide: LOCALE_ID, useValue: 'es-AR' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
