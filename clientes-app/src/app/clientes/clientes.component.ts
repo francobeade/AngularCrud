@@ -4,6 +4,7 @@ import { ClienteService } from './cliente.service';
 import swal from 'sweetalert2';
 import { tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { ModalService } from './detalle/modal.service';
 
 @Component({
   selector: 'app-clientes',
@@ -12,9 +13,11 @@ import { ActivatedRoute } from '@angular/router';
 export class ClientesComponent {
   clientes: Cliente[];
   paginador: any;
+  clienteSeleccionado: Cliente;
 
   constructor(
     private clienteService: ClienteService,
+    private modalService: ModalService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -30,9 +33,9 @@ export class ClientesComponent {
         .getClientes(page)
         .pipe(
           tap((response) => {
-            console.log('ClientesComponent: tap 3');
+            // console.log('ClientesComponent: tap 3');
             (response.content as Cliente[]).forEach((cliente) => {
-              console.log(cliente.nombre);
+              // console.log(cliente.nombre);
             });
           })
         )
@@ -40,6 +43,15 @@ export class ClientesComponent {
           this.clientes = response.content as Cliente[];
           this.paginador = response;
         });
+    });
+
+    this.modalService.notificarUpload.subscribe((cliente) => {
+      this.clientes = this.clientes.map((clienteOriginal) => {
+        if (cliente.id == clienteOriginal.id) {
+          clienteOriginal.image = cliente.image;
+        }
+        return clienteOriginal;
+      });
     });
   }
 
@@ -69,5 +81,10 @@ export class ClientesComponent {
         });
       }
     });
+  }
+
+  abrirModal(cliente: Cliente) {
+    this.clienteSeleccionado = cliente;
+    this.modalService.abrirModal();
   }
 }

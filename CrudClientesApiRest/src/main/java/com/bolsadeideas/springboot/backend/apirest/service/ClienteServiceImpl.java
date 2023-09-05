@@ -5,6 +5,7 @@
 package com.bolsadeideas.springboot.backend.apirest.service;
 
 import com.bolsadeideas.springboot.backend.apirest.entity.Cliente;
+import com.bolsadeideas.springboot.backend.apirest.entity.Region;
 import com.bolsadeideas.springboot.backend.apirest.repository.ClienteRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,12 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional
     public void delete(Long id) {
         clienteRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Region> findAllRegiones() {
+        return clienteRepository.findAllRegiones();
     }
 
 }

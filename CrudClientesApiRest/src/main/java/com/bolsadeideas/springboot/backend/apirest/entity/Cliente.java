@@ -4,19 +4,24 @@
  */
 package com.bolsadeideas.springboot.backend.apirest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -40,17 +45,26 @@ public class Cliente implements Serializable {
     
     @NotEmpty(message = "No puede estar vacio")
     @Email(message = "no es una dirección de correo bien formada")
-    @Column(nullable=false , unique = true)
+    @Column(nullable=false , unique = false)
     private String email;
     
+    @NotNull(message = "no puede estar vacio")
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private Date createAt;
     
-    @PrePersist
-    public void prePersist() {
-        createAt = new Date();
-    }
+    private String image;
+    
+    @NotNull(message = "la región no puede ser vacia")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Region region;
+    
+//    @PrePersist
+//    public void prePersist() {
+//        createAt = new Date();
+//    }
 
     public Cliente() {
     }
@@ -61,6 +75,14 @@ public class Cliente implements Serializable {
         this.apellido = apellido;
         this.email = email;
         this.createAt = createAt;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
     
     
@@ -104,6 +126,16 @@ public class Cliente implements Serializable {
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+    
+    
     
     private static final long serialVersionUID =1L;
 }

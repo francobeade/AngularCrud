@@ -13,6 +13,15 @@ import { FormComponent } from './clientes/form.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import localeAr from "@angular/common/locales/es-AR";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { DetalleComponent } from './clientes/detalle/detalle.component';
+
 
 registerLocaleData(localeAr, 'es')
 
@@ -31,9 +40,16 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,MatFormFieldModule,
+    MatInputModule, 
+    MatDatepickerModule, 
+    MatNativeDateModule,
+    MatSlideToggleModule,
+    BrowserAnimationsModule
+    
   ],
   exports: [RouterModule],
-  declarations: [FormComponent],
+  declarations: [FormComponent,],
 })
 export class AppRoutingModule {}
 
@@ -44,12 +60,19 @@ export class AppRoutingModule {}
     FooterComponent,
     DirectivaComponent,
     ClientesComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    DetalleComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule,
+    FormsModule,MatFormFieldModule, 
+    MatInputModule, 
+    MatDatepickerModule, 
+    MatNativeDateModule,
+    MatSlideToggleModule,
+    BrowserAnimationsModule,
+    MatMomentDateModule,
     RouterModule.forRoot(routes),
   ],
   providers: [{provide: LOCALE_ID, useValue: 'es-AR' }],
