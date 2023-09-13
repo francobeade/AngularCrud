@@ -18,7 +18,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService usuarioService;
 
 	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
+	public static BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
@@ -34,6 +34,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManager();
 	}
 
+	// Misma configuracion que en el ResourceServerConfig pero desde el lado de spring
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().anyRequest().authenticated().and().csrf().disable().sessionManagement()

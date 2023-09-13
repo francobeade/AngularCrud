@@ -10,6 +10,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
+	// Configuracion necesaria para establecer que usuarios pueden ingresar a las diferentes url / endpoints desde el lado de Oauth2
+	// En SpringSecurityConfig se configura lo mismo pero del lado de spring
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/clientes").permitAll()
