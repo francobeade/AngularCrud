@@ -38,6 +38,13 @@ public class Usuario implements Serializable {
     
     private Boolean enable;
     
+    private String nombre;
+    private String apellido;
+    @Column(unique = true)
+    private String email;
+
+    
+    
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(uniqueConstraints = {@UniqueConstraint(columnNames = {"usuario_id", "roles_id"})})
     private List<Role> roles;
@@ -73,8 +80,33 @@ public class Usuario implements Serializable {
     public void setEnable(Boolean enable) {
         this.enable = enable;
     }
+    
 
-    public List<Role> getRoles() {
+    public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public List<Role> getRoles() {
         return roles;
     }
 

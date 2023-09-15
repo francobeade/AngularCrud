@@ -26,8 +26,11 @@ private IUsuarioService usuarioService;
 		
 		Map<String, Object> info = new HashMap<>();
 		info.put("info_adicional", "Hola que tal!".concat(authentication.getName()));
-		
 		info.put("nombre_usuario", usuario.getId() + ": " + usuario.getUsername());
+		
+		info.put("nombre", usuario.getId() + ": " + usuario.getNombre());
+		info.put("apellido", usuario.getId() + ": " + usuario.getApellido());
+		info.put("email", usuario.getId() + ": " + usuario.getEmail());
 		
 		((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
 		

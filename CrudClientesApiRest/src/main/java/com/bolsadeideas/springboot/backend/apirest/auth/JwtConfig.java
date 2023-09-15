@@ -2,7 +2,7 @@ package com.bolsadeideas.springboot.backend.apirest.auth;
 
 public class JwtConfig {
 
-	public static final String LLAVE_SECRETA = "alguna.clave.secreta.1245678";
+	public static final String LLAVE_SECRETA = "clave.secreta.1245678";
 	
 	public static final String RSA_PRIVATE = "-----BEGIN RSA PRIVATE KEY-----\r\n"
 			+ "MIIEogIBAAKCAQEA4OSemE7omTB9g7cQT9WJkr4jOwDU5pnlNOHrkVwIDqDKkfxJ\r\n"
