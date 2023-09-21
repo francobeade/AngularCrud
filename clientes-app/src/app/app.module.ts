@@ -8,30 +8,45 @@ import { FooterComponent } from './footer/footer.component';
 import { DirectivaComponent } from './directiva/directiva.component';
 import { ClientesComponent } from './clientes/clientes.component';
 import { RouterModule, Routes } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormComponent } from './clientes/form.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import localeAr from "@angular/common/locales/es-AR";
+import localeAr from '@angular/common/locales/es-AR';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatNativeDateModule} from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { DetalleComponent } from './clientes/detalle/detalle.component';
+import { LoginComponent } from './usuarios/login.component';
+import { authGuard } from './usuarios/guards/auth.guard';
+import { roleGuard } from './usuarios/guards/role.guard';
+import { TokenInterceptor } from './usuarios/interceptors/token.interceptor';
+import { AuthInterceptor } from './usuarios/interceptors/auth.interceptor';
 
-
-registerLocaleData(localeAr, 'es')
+registerLocaleData(localeAr, 'es');
 
 const routes: Routes = [
   { path: '', redirectTo: '/clientes', pathMatch: 'full' },
   { path: 'directivas', component: DirectivaComponent },
   { path: 'clientes', component: ClientesComponent },
   { path: 'clientes/page/:page', component: ClientesComponent },
-  { path: 'clientes/form', component: FormComponent },
-  { path: 'clientes/form/:id', component: FormComponent },
+  {
+    path: 'clientes/form',
+    component: FormComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'ROLE_ADMIN' },
+  },
+  {
+    path: 'clientes/form/:id',
+    component: FormComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'ROLE_ADMIN' },
+  },
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({
@@ -40,16 +55,16 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,MatFormFieldModule,
-    MatInputModule, 
-    MatDatepickerModule, 
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,
-    BrowserAnimationsModule
-    
+    BrowserAnimationsModule,
   ],
   exports: [RouterModule],
-  declarations: [FormComponent,],
+  declarations: [FormComponent, LoginComponent],
 })
 export class AppRoutingModule {}
 
@@ -61,21 +76,26 @@ export class AppRoutingModule {}
     DirectivaComponent,
     ClientesComponent,
     PaginatorComponent,
-    DetalleComponent
+    DetalleComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule,MatFormFieldModule, 
-    MatInputModule, 
-    MatDatepickerModule, 
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,
     BrowserAnimationsModule,
     MatMomentDateModule,
     RouterModule.forRoot(routes),
   ],
-  providers: [{provide: LOCALE_ID, useValue: 'es-AR' }],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es-AR' },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
