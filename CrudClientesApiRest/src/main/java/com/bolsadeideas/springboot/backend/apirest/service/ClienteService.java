@@ -5,15 +5,13 @@
 package com.bolsadeideas.springboot.backend.apirest.service;
 
 import com.bolsadeideas.springboot.backend.apirest.entity.Cliente;
+import com.bolsadeideas.springboot.backend.apirest.entity.Factura;
+import com.bolsadeideas.springboot.backend.apirest.entity.Producto;
 import com.bolsadeideas.springboot.backend.apirest.entity.Region;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-/**
- *
- * @author Franco
- */
 public interface ClienteService {
 
     public List<Cliente> findAll();
@@ -27,4 +25,12 @@ public interface ClienteService {
     public void delete(Long id);
     
     public List<Region> findAllRegiones();
+    
+    public Factura findFacturaById(Long id);
+    
+    public Factura saveFactura(Factura factura);
+    
+    public void deleteFacturaById(Long id);
+    
+    public List<Producto> findProductoByNombre(String term);
 }

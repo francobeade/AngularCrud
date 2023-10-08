@@ -5,8 +5,13 @@
 package com.bolsadeideas.springboot.backend.apirest.service;
 
 import com.bolsadeideas.springboot.backend.apirest.entity.Cliente;
+import com.bolsadeideas.springboot.backend.apirest.entity.Factura;
+import com.bolsadeideas.springboot.backend.apirest.entity.Producto;
 import com.bolsadeideas.springboot.backend.apirest.entity.Region;
 import com.bolsadeideas.springboot.backend.apirest.repository.ClienteRepository;
+import com.bolsadeideas.springboot.backend.apirest.repository.IFacturaRepository;
+import com.bolsadeideas.springboot.backend.apirest.repository.IProductoRepository;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +28,12 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    
+    @Autowired
+    private IFacturaRepository facturaRepository;
+    
+    @Autowired
+    private IProductoRepository productoRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -59,5 +70,29 @@ public class ClienteServiceImpl implements ClienteService {
     public List<Region> findAllRegiones() {
         return clienteRepository.findAllRegiones();
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public Factura findFacturaById(Long id) {
+		return facturaRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public Factura saveFactura(Factura factura) {
+		return facturaRepository.save(factura);
+	}
+
+	@Override
+	@Transactional
+	public void deleteFacturaById(Long id) {
+		facturaRepository.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Producto> findProductoByNombre(String term) {
+		return productoRepository.findByNombre(term);
+	}
 
 }

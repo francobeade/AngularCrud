@@ -26,6 +26,10 @@ import { authGuard } from './usuarios/guards/auth.guard';
 import { roleGuard } from './usuarios/guards/role.guard';
 import { TokenInterceptor } from './usuarios/interceptors/token.interceptor';
 import { AuthInterceptor } from './usuarios/interceptors/auth.interceptor';
+import { DetalleFacturaComponent } from './facturas/detalle-factura.component';
+import { Factura } from './facturas/models/factura';
+import { FacturasComponent } from './facturas/facturas.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 registerLocaleData(localeAr, 'es');
 
@@ -47,6 +51,12 @@ const routes: Routes = [
     data: { role: 'ROLE_ADMIN' },
   },
   { path: 'login', component: LoginComponent },
+  { path: 'facturas/:id', component: DetalleFacturaComponent,
+  canActivate: [authGuard, roleGuard],
+  data: { role: 'ROLE_USER' },},
+  { path: 'facturas/form/:clienteId', component: FacturasComponent,
+  canActivate: [authGuard, roleGuard],
+  data: { role: 'ROLE_ADMIN' },}
 ];
 
 @NgModule({
@@ -61,10 +71,10 @@ const routes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule,MatAutocompleteModule
   ],
   exports: [RouterModule],
-  declarations: [FormComponent, LoginComponent],
+  declarations: [FormComponent, LoginComponent, DetalleFacturaComponent, FacturasComponent],
 })
 export class AppRoutingModule {}
 
@@ -90,6 +100,7 @@ export class AppRoutingModule {}
     BrowserAnimationsModule,
     MatMomentDateModule,
     RouterModule.forRoot(routes),
+    MatAutocompleteModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-AR' },

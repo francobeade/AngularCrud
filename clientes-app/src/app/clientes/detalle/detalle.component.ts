@@ -5,6 +5,8 @@ import swal from 'sweetalert2';
 import { HttpEventType } from '@angular/common/http';
 import { ModalService } from './modal.service';
 import { AuthService } from 'src/app/usuarios/auth.service';
+import { Factura } from 'src/app/facturas/models/factura';
+import { FacturaService } from 'src/app/facturas/services/factura.service';
 
 @Component({
   selector: 'detalle-cliente',
@@ -20,7 +22,8 @@ export class DetalleComponent {
   constructor(
     private clienteService: ClienteService,
     public modalService: ModalService,
-    public authService: AuthService
+    public authService: AuthService,
+    public facturaService: FacturaService
   ) {}
 
   ngOnInit(){} //void {
@@ -77,5 +80,33 @@ export class DetalleComponent {
     this.modalService.cerrarModal();
     this.fotoSeleccionada = null;
     this.progreso = 0;
+  }
+
+  delete(factura:Factura): void {
+    swal({
+      title: 'Está seguro?',
+      text: `¿Seguro que desea eliminar la factura ${factura.descripcion}`,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!',
+      cancelButtonText: 'No, cancelar!',
+      confirmButtonClass: 'btn btn-success',
+      cancelButtonClass: 'btn btn-danger',
+      buttonsStyling: false,
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.value) {
+        this.facturaService.delete(factura.id).subscribe((response) => {
+          this.cliente.facturas = this.cliente.facturas.filter((f) => f !== factura);
+          swal(
+            'Factura Eliminado!',
+            `Factura ${factura.descripcion} eliminada con éxito.`,
+            'success'
+          );
+        });
+      }
+    });
   }
 }
